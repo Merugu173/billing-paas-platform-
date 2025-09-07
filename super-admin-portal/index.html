@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillMaster Pro - Super Admin Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>BillMaster Pro</h1>
+                    <p>Super Admin Platform</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Admin Email</label>
+                        <input type="email" class="form-control" id="adminEmail" placeholder="admin@billmaster.com" value="admin@billmaster.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="adminPassword" placeholder="Enter password" value="superadmin123" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">2FA Code</label>
+                        <input type="text" class="form-control" id="twoFactorCode" placeholder="Enter 6-digit code" value="123456" required>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full-width">Login to Admin Panel</button>
+                </form>
+
+                <div class="demo-info">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <p>Email: admin@billmaster.com</p>
+                    <p>Password: superadmin123</p>
+                    <p>2FA Code: 123456</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Super Admin Dashboard -->
+    <div id="adminDashboard" class="page">
+        <div class="dashboard-layout">
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <h2>BillMaster Pro</h2>
+                    <div class="user-info">
+                        <span class="user-name">Super Admin</span>
+                        <button id="adminLogoutBtn" class="btn btn--sm btn--outline">Logout</button>
+                    </div>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li><button class="nav-btn active" data-section="dashboard">📊 Dashboard</button></li>
+                    <li><button class="nav-btn" data-section="vendors">🏪 Vendor Management</button></li>
+                    <li><button class="nav-btn" data-section="applications">📋 Vendor Applications</button></li>
+                    <li><button class="nav-btn" data-section="payments">💰 Payment Management</button></li>
+                    <li><button class="nav-btn" data-section="roles">👥 Role Management</button></li>
+                    <li><button class="nav-btn" data-section="analytics">📈 Analytics</button></li>
+                    <li><button class="nav-btn" data-section="settings">⚙️ Settings</button></li>
+                    <li><button class="nav-btn" data-section="audit">🔍 Audit Logs</button></li>
+                </ul>
+            </nav>
+
+            <main class="main-content">
+                <!-- Dashboard Section -->
+                <section id="dashboardSection" class="content-section active">
+                    <div class="section-header">
+                        <h2>Platform Overview</h2>
+                        <div class="date-info">Last Updated: <span id="currentDateTime"></span></div>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">🏪</div>
+                            <div class="stat-content">
+                                <h3 id="totalVendors">342</h3>
+                                <p>Total Vendors</p>
+                                <small class="stat-change positive">+12 this month</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-content">
+                                <h3 id="activeVendors">318</h3>
+                                <p>Active Vendors</p>
+                                <small class="stat-change positive">93% active rate</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-content">
+                                <h3 id="totalRevenue">₹24.5L</h3>
+                                <p>Total Revenue</p>
+                                <small class="stat-change positive">+23.5% growth</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-content">
+                                <h3 id="mrr">₹1.85L</h3>
+                                <p>Monthly Recurring Revenue</p>
+                                <small class="stat-change positive">Stable growth</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-content">
+                                <h3 id="pendingApplications">12</h3>
+                                <p>Pending Applications</p>
+                                <small class="stat-change warning">Needs review</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-content">
+                                <h3 id="overdueAccounts">15</h3>
+                                <p>Overdue Accounts</p>
+                                <small class="stat-change error">Action required</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-charts">
+                        <div class="chart-container">
+                            <h3>Revenue Trend (Last 6 Months)</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Vendor Status Distribution</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="vendorStatusChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Subscription Plans Distribution</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="subscriptionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Recent Platform Activity</h3>
+                        <div class="activity-list" id="recentActivityList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Vendor Management Section -->
+                <section id="vendorsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Vendor Management</h2>
+                        <div class="section-actions">
+                            <input type="text" id="vendorSearch" class="form-control" placeholder="Search vendors...">
+                            <select id="vendorStatusFilter" class="form-control">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="suspended">Suspended</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                            <button class="btn btn--primary" onclick="VendorManager.addVendor()">Add Vendor</button>
+                            <button class="btn btn--secondary" onclick="VendorManager.exportVendors()">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="vendors-table-container">
+                        <table class="data-table" id="vendorsTable">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllVendors"></th>
+                                    <th>Vendor Details</th>
+                                    <th>Plan & Revenue</th>
+                                    <th>Payment Status</th>
+                                    <th>Performance</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Vendor Applications Section -->
+                <section id="applicationsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Vendor Applications</h2>
+                        <div class="section-actions">
+                            <select id="applicationStatusFilter" class="form-control">
+                                <option value="">All Applications</option>
+                                <option value="pending">Pending Review</option>
+                                <option value="under_review">Under Review</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                            <button class="btn btn--secondary" onclick="ApplicationManager.exportApplications()">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="applications-grid" id="applicationsGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Payment Management Section -->
+                <section id="paymentsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Payment Management</h2>
+                        <div class="section-actions">
+                            <select id="paymentStatusFilter" class="form-control">
+                                <option value="">All Payments</option>
+                                <option value="current">Current</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                            <button class="btn btn--primary" onclick="PaymentManager.sendDunningEmails()">Send Reminders</button>
+                            <button class="btn btn--secondary" onclick="PaymentManager.exportPayments()">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="payment-overview">
+                        <div class="payment-summary-card">
+                            <h4>Payment Overview</h4>
+                            <div class="payment-stats-grid">
+                                <div class="payment-stat">
+                                    <div class="payment-stat-value">₹1.85L</div>
+                                    <div class="payment-stat-label">Monthly Collections</div>
+                                </div>
+                                <div class="payment-stat">
+                                    <div class="payment-stat-value">98.7%</div>
+                                    <div class="payment-stat-label">Success Rate</div>
+                                </div>
+                                <div class="payment-stat">
+                                    <div class="payment-stat-value">₹45K</div>
+                                    <div class="payment-stat-label">Outstanding</div>
+                                </div>
+                                <div class="payment-stat">
+                                    <div class="payment-stat-value">15</div>
+                                    <div class="payment-stat-label">Overdue</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payments-table-container">
+                        <table class="data-table" id="paymentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Vendor</th>
+                                    <th>Plan</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Role Management Section -->
+                <section id="rolesSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Role & Access Management</h2>
+                        <div class="section-actions">
+                            <button class="btn btn--primary" onclick="RoleManager.addModerator()">Add Moderator</button>
+                            <button class="btn btn--secondary" onclick="RoleManager.managePermissions()">Manage Permissions</button>
+                        </div>
+                    </div>
+
+                    <div class="roles-grid" id="rolesGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analyticsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Platform Analytics</h2>
+                        <div class="section-actions">
+                            <select id="analyticsTimeframe" class="form-control">
+                                <option value="7d">Last 7 Days</option>
+                                <option value="30d" selected>Last 30 Days</option>
+                                <option value="90d">Last 90 Days</option>
+                                <option value="1y">Last Year</option>
+                            </select>
+                            <button class="btn btn--secondary" onclick="AnalyticsManager.exportReport()">Export Report</button>
+                        </div>
+                    </div>
+
+                    <div class="analytics-overview">
+                        <div class="analytics-card">
+                            <h4>Growth Metrics</h4>
+                            <div class="metric-row">
+                                <span>Vendor Growth:</span>
+                                <span class="metric-value positive">+23.5%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span>Revenue Growth:</span>
+                                <span class="metric-value positive">+18.2%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span>Churn Rate:</span>
+                                <span class="metric-value warning">2.3%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-charts">
+                        <div class="chart-container">
+                            <h3>Platform Growth Trends</h3>
+                            <div style="position: relative; height: 350px;">
+                                <canvas id="growthChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Revenue by Plan Type</h3>
+                            <div style="position: relative; height: 350px;">
+                                <canvas id="planRevenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settingsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Platform Settings</h2>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h4>Subscription Plans</h4>
+                            <div id="subscriptionPlans">
+                                <!-- Populated by JS -->
+                            </div>
+                            <button class="btn btn--primary" onclick="SettingsManager.editPlans()">Edit Plans</button>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <h4>System Configuration</h4>
+                            <div class="setting-item">
+                                <label>Platform Name</label>
+                                <input type="text" class="form-control" value="BillMaster Pro">
+                            </div>
+                            <div class="setting-item">
+                                <label>Default Currency</label>
+                                <select class="form-control">
+                                    <option value="INR" selected>Indian Rupee (₹)</option>
+                                    <option value="USD">US Dollar ($)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn--secondary" onclick="SettingsManager.saveSettings()">Save Settings</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Audit Logs Section -->
+                <section id="auditSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Audit Trail & Security Logs</h2>
+                        <div class="section-actions">
+                            <input type="date" id="auditFromDate" class="form-control" value="2025-09-01">
+                            <input type="date" id="auditToDate" class="form-control" value="2025-09-06">
+                            <select id="auditActionFilter" class="form-control">
+                                <option value="">All Actions</option>
+                                <option value="login">Login</option>
+                                <option value="vendor_approval">Vendor Approval</option>
+                                <option value="payment">Payment</option>
+                                <option value="settings">Settings Change</option>
+                            </select>
+                            <button class="btn btn--secondary" onclick="AuditManager.exportLogs()">Export Logs</button>
+                        </div>
+                    </div>
+
+                    <div class="audit-logs-container">
+                        <table class="data-table" id="auditTable">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                    <th>User</th>
+                                    <th>Description</th>
+                                    <th>IP Address</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="vendorDetailsModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Vendor Details</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="vendorDetailsContent">
+                    <!-- Content populated by JS -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn--secondary modal-close">Close</button>
+                    <button class="btn btn--primary" onclick="VendorManager.approveVendor()">Approve</button>
+                    <button class="btn btn--error" onclick="VendorManager.suspendVendor()">Suspend</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="applicationReviewModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Review Vendor Application</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="applicationReviewContent">
+                    <!-- Content populated by JS -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn--secondary modal-close">Close</button>
+                    <button class="btn btn--primary" onclick="ApplicationManager.approveApplication()">Approve</button>
+                    <button class="btn btn--error" onclick="ApplicationManager.rejectApplication()">Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
