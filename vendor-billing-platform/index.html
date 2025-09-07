@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillMaster Pro - Vendor & Agent Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>BillMaster Pro</h1>
+                    <p>Vendor & Agent Billing Platform</p>
+                </div>
+                
+                <div class="role-selector">
+                    <button id="vendorRoleBtn" class="role-btn active" data-role="vendor">
+                        <div class="role-icon">🏪</div>
+                        <span>Shop Owner</span>
+                    </button>
+                    <button id="agentRoleBtn" class="role-btn" data-role="agent">
+                        <div class="role-icon">👤</div>
+                        <span>Billing Agent</span>
+                    </button>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div id="vendorLogin" class="login-fields">
+                        <div class="form-group">
+                            <label class="form-label">Vendor Email</label>
+                            <input type="email" class="form-control" id="vendorEmail" placeholder="vendor@techmart.com" value="vendor@techmart.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="vendorPassword" placeholder="Enter password" value="vendor123">
+                        </div>
+                    </div>
+
+                    <div id="agentLogin" class="login-fields hidden">
+                        <div class="form-group">
+                            <label class="form-label">Agent Code</label>
+                            <input type="text" class="form-control" id="agentCode" placeholder="Enter your agent code" value="RK2025">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">PIN</label>
+                            <input type="password" class="form-control" id="agentPin" placeholder="4-digit PIN" value="1234">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                </form>
+
+                <div class="demo-info">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <p>Vendor: vendor@techmart.com / vendor123</p>
+                    <p>Agent: RK2025 / 1234 or PS2025 / 5678</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor Dashboard -->
+    <div id="vendorDashboard" class="page">
+        <div class="dashboard-layout">
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <h2 id="businessNameHeader">TechMart Store</h2>
+                    <div class="user-info">
+                        <span class="user-name" id="vendorUserName">Shop Owner</span>
+                        <button id="vendorLogoutBtn" class="btn btn--sm btn--outline">Logout</button>
+                    </div>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li><button class="nav-btn active" data-section="dashboard">📊 Dashboard</button></li>
+                    <li><button class="nav-btn" data-section="products">📦 Product Management</button></li>
+                    <li><button class="nav-btn" data-section="inventory">📈 Inventory Management</button></li>
+                    <li><button class="nav-btn" data-section="stockReports">📋 Stock Reports</button></li>
+                    <li><button class="nav-btn" data-section="paymentStats">💰 Payment Statistics</button></li>
+                    <li><button class="nav-btn" data-section="agentManagement">👥 Agent Management</button></li>
+                    <li><button class="nav-btn" data-section="agentPerformance">🎯 Agent Performance</button></li>
+                    <li><button class="nav-btn" data-section="escalations">🚨 Escalations</button></li>
+                    <li><button class="nav-btn" data-section="analytics">📈 Advanced Analytics</button></li>
+                    <li><button class="nav-btn" data-section="settings">⚙️ Settings</button></li>
+                    <li><button class="nav-btn" data-section="subscription">💳 Subscription</button></li>
+                </ul>
+            </nav>
+
+            <main class="main-content">
+                <!-- Vendor Dashboard Section -->
+                <section id="dashboardSection" class="content-section active">
+                    <div class="section-header">
+                        <h2>Business Overview</h2>
+                        <div class="date-info">Today: <span id="currentDate"></span></div>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-content">
+                                <h3 id="todaysSales">₹45,750</h3>
+                                <p>Today's Sales</p>
+                                <small class="stat-change positive">+15.2% vs yesterday</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-content">
+                                <h3 id="monthSales">₹12,87,500</h3>
+                                <p>This Month Sales</p>
+                                <small class="stat-change positive">Growth: 15.2%</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-content">
+                                <h3 id="totalProducts">1,247</h3>
+                                <p>Total Products</p>
+                                <small class="stat-change warning">23 low stock</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <h3 id="activeAgents">5</h3>
+                                <p>Active Agents</p>
+                                <small class="stat-change positive">All online</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💵</div>
+                            <div class="stat-content">
+                                <h3 id="profitMargin">28.5%</h3>
+                                <p>Profit Margin</p>
+                                <small class="stat-change positive">+2.3% this month</small>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-content">
+                                <h3 id="avgTicketSize">₹1,016</h3>
+                                <p>Avg Ticket Size</p>
+                                <small class="stat-change positive">45 transactions today</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-charts">
+                        <div class="chart-container">
+                            <h3>Sales Trend (Last 7 Days)</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="salesTrendChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Category Performance</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Payment Methods Distribution</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="paymentMethodChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-transactions">
+                        <h3>Recent Transactions</h3>
+                        <div class="transaction-list" id="recentTransactionsList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Product Management Section -->
+                <section id="productsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Product Management</h2>
+                        <div class="section-actions">
+                            <input type="text" id="productSearch" class="form-control" placeholder="Search products...">
+                            <select id="categoryFilter" class="form-control">
+                                <option value="">All Categories</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Groceries">Groceries</option>
+                                <option value="Footwear">Footwear</option>
+                                <option value="Clothing">Clothing</option>
+                            </select>
+                            <button class="btn btn--primary" onclick="ProductManager.addProduct()">Add Product</button>
+                            <button class="btn btn--secondary" onclick="ProductManager.importProducts()">Import CSV</button>
+                            <button class="btn btn--outline" onclick="ProductManager.exportProducts()">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="product-stats-summary">
+                        <div class="summary-card">
+                            <h4>Total Products</h4>
+                            <div class="summary-value">1,247</div>
+                            <small>Active inventory</small>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Low Stock Items</h4>
+                            <div class="summary-value warning">23</div>
+                            <small>Need reorder</small>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Out of Stock</h4>
+                            <div class="summary-value error">8</div>
+                            <small>Urgent action</small>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Categories</h4>
+                            <div class="summary-value">18</div>
+                            <small>Active categories</small>
+                        </div>
+                    </div>
+
+                    <div class="products-table-container">
+                        <table class="data-table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllProducts"></th>
+                                    <th>Product Details</th>
+                                    <th>Pricing</th>
+                                    <th>Stock Status</th>
+                                    <th>Tax Info</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Inventory Management Section -->
+                <section id="inventorySection" class="content-section">
+                    <div class="section-header">
+                        <h2>Inventory Management</h2>
+                        <div class="section-actions">
+                            <button class="btn btn--primary" onclick="InventoryManager.addStock()">Add Stock</button>
+                            <button class="btn btn--secondary" onclick="InventoryManager.adjustStock()">Stock Adjustment</button>
+                            <button class="btn btn--outline" onclick="InventoryManager.generatePO()">Generate PO</button>
+                        </div>
+                    </div>
+
+                    <div class="inventory-overview">
+                        <div class="inventory-card">
+                            <h4>Stock Valuation</h4>
+                            <div class="inventory-value">₹15,45,000</div>
+                            <small>Current inventory value</small>
+                        </div>
+                        <div class="inventory-card">
+                            <h4>Pending Orders</h4>
+                            <div class="inventory-value">8</div>
+                            <small>Purchase orders</small>
+                        </div>
+                        <div class="inventory-card">
+                            <h4>Suppliers</h4>
+                            <div class="inventory-value">24</div>
+                            <small>Active suppliers</small>
+                        </div>
+                    </div>
+
+                    <div class="inventory-alerts" id="inventoryAlerts">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Stock Reports Section -->
+                <section id="stockReportsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Stock Reports</h2>
+                        <div class="section-actions">
+                            <select id="reportType" class="form-control">
+                                <option value="movement">Stock Movement</option>
+                                <option value="valuation">Stock Valuation</option>
+                                <option value="aging">Stock Aging</option>
+                                <option value="turnover">Inventory Turnover</option>
+                            </select>
+                            <input type="date" id="reportFromDate" class="form-control" value="2025-09-01">
+                            <input type="date" id="reportToDate" class="form-control" value="2025-09-06">
+                            <button class="btn btn--primary" onclick="ReportManager.generateReport()">Generate</button>
+                        </div>
+                    </div>
+
+                    <div class="report-container" id="reportContainer">
+                        <!-- Report content populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Payment Statistics Section -->
+                <section id="paymentStatsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Payment Statistics & P&L Reports</h2>
+                        <div class="section-actions">
+                            <select id="statsTimeframe" class="form-control">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                                <option value="quarter">This Quarter</option>
+                            </select>
+                            <button class="btn btn--outline" onclick="PaymentStatsManager.exportReport()">Export Report</button>
+                        </div>
+                    </div>
+
+                    <div class="payment-overview">
+                        <div class="payment-card">
+                            <h4>Total Revenue</h4>
+                            <div class="payment-value">₹12,87,500</div>
+                            <small class="positive">+15.2% growth</small>
+                        </div>
+                        <div class="payment-card">
+                            <h4>Total Profit</h4>
+                            <div class="payment-value">₹3,67,000</div>
+                            <small class="positive">28.5% margin</small>
+                        </div>
+                        <div class="payment-card">
+                            <h4>Average Ticket</h4>
+                            <div class="payment-value">₹1,016</div>
+                            <small>Per transaction</small>
+                        </div>
+                        <div class="payment-card">
+                            <h4>Transactions</h4>
+                            <div class="payment-value">1,267</div>
+                            <small>This month</small>
+                        </div>
+                    </div>
+
+                    <div class="payment-charts">
+                        <div class="chart-container">
+                            <h3>Profit & Loss Trend</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="profitLossChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Revenue by Product Category</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="categoryRevenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Agent Management Section -->
+                <section id="agentManagementSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Billing Agent Management</h2>
+                        <div class="section-actions">
+                            <input type="text" id="agentSearch" class="form-control" placeholder="Search agents...">
+                            <button class="btn btn--primary" onclick="AgentManager.addAgent()">Add Agent</button>
+                            <button class="btn btn--secondary" onclick="AgentManager.manageShifts()">Manage Shifts</button>
+                        </div>
+                    </div>
+
+                    <div class="agents-grid" id="agentsGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Agent Performance Section -->
+                <section id="agentPerformanceSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Agent Performance Dashboard</h2>
+                        <div class="section-actions">
+                            <select id="performancePeriod" class="form-control">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="performance-overview" id="performanceOverview">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <div class="performance-charts">
+                        <div class="chart-container">
+                            <h3>Agent Sales Comparison</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="agentSalesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Other sections -->
+                <section id="escalationsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Escalations Management</h2>
+                    </div>
+                    <div class="coming-soon">
+                        <h3>🚨 Escalations Management</h3>
+                        <p>Issue reporting and tracking system coming soon</p>
+                    </div>
+                </section>
+
+                <section id="analyticsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Advanced Analytics</h2>
+                    </div>
+                    <div class="coming-soon">
+                        <h3>📈 Advanced Analytics</h3>
+                        <p>Comprehensive business insights and forecasting</p>
+                    </div>
+                </section>
+
+                <section id="settingsSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Business Settings</h2>
+                    </div>
+                    <div class="coming-soon">
+                        <h3>⚙️ Business Settings</h3>
+                        <p>Configure business information, taxes, and preferences</p>
+                    </div>
+                </section>
+
+                <section id="subscriptionSection" class="content-section">
+                    <div class="section-header">
+                        <h2>Subscription & Plan</h2>
+                    </div>
+                    
+                    <div class="subscription-overview">
+                        <div class="subscription-card">
+                            <h3>Current Plan</h3>
+                            <div class="plan-info">
+                                <div class="plan-name">Standard Plan</div>
+                                <div class="plan-price">₹7,999/month</div>
+                                <div class="plan-status">Active</div>
+                            </div>
+                            <div class="plan-features">
+                                <p>✅ Up to 5 agents</p>
+                                <p>✅ 5000 products limit</p>
+                                <p>✅ Advanced analytics</p>
+                                <p>✅ 5GB storage</p>
+                            </div>
+                            <button class="btn btn--primary" onclick="SubscriptionManager.upgradePlan()">Upgrade Plan</button>
+                        </div>
+                        
+                        <div class="usage-stats">
+                            <h4>Usage Statistics</h4>
+                            <div class="usage-item">
+                                <span>Agents: 5/5</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="usage-item">
+                                <span>Products: 1,247/5,000</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 25%"></div>
+                                </div>
+                            </div>
+                            <div class="usage-item">
+                                <span>Storage: 2.5GB/5GB</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Agent Interface -->
+    <div id="agentInterface" class="page">
+        <div class="agent-layout">
+            <header class="agent-header">
+                <div class="agent-info">
+                    <div class="business-info">
+                        <h2 id="agentBusinessName">TechMart Store</h2>
+                        <p id="agentName">Agent: Rajesh Kumar</p>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="stat-badge success">
+                            <span class="stat-label">Today's Sales</span>
+                            <span class="stat-value" id="agentTodaySales">₹18,500</span>
+                        </div>
+                        <div class="stat-badge info">
+                            <span class="stat-label">Bills Count</span>
+                            <span class="stat-value" id="agentTodayBills">22</span>
+                        </div>
+                        <div class="stat-badge warning">
+                            <span class="stat-label">Current Time</span>
+                            <span class="stat-value" id="currentTime">10:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="agent-controls">
+                        <button class="btn btn--secondary btn--sm" onclick="AgentManager.viewShiftSummary()">Shift Summary</button>
+                        <button id="agentLogoutBtn" class="btn btn--sm btn--outline">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="agent-main">
+                <div class="billing-workspace">
+                    <!-- Customer Information Section -->
+                    <div class="customer-section">
+                        <h3>Customer Information</h3>
+                        <div class="customer-inputs">
+                            <input type="text" id="customerName" class="form-control" placeholder="Customer Name">
+                            <input type="tel" id="customerPhone" class="form-control" placeholder="Phone Number">
+                        </div>
+                    </div>
+
+                    <!-- Product Search and Cart -->
+                    <div class="billing-main">
+                        <div class="billing-left">
+                            <div class="search-section">
+                                <div class="product-search-large">
+                                    <input type="text" id="agentProductSearch" class="search-input-large" placeholder="Search products by name, code, or scan barcode...">
+                                    <div id="productSuggestions" class="suggestions-dropdown"></div>
+                                </div>
+                            </div>
+
+                            <div class="cart-section">
+                                <div class="cart-header">
+                                    <h4>Bill Items</h4>
+                                    <span class="bill-number">Bill #: <span id="currentBillNumber">TM-2025-001548</span></span>
+                                </div>
+                                <div id="cartItems" class="cart-items">
+                                    <div class="empty-cart">
+                                        <div class="empty-cart-icon">🛒</div>
+                                        <p>Start by searching and adding products</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bill Summary and Payment -->
+                        <div class="billing-right">
+                            <div class="bill-summary">
+                                <h3>Bill Summary</h3>
+                                
+                                <div class="summary-row">
+                                    <span>Subtotal:</span>
+                                    <span id="billSubtotal">₹0.00</span>
+                                </div>
+                                
+                                <div class="discount-section">
+                                    <label>Discount</label>
+                                    <div class="discount-inputs">
+                                        <input type="number" id="discountPercent" placeholder="%" min="0" max="100">
+                                        <span>or</span>
+                                        <input type="number" id="discountAmount" placeholder="₹" min="0">
+                                    </div>
+                                </div>
+
+                                <div class="tax-breakdown">
+                                    <div class="tax-row">
+                                        <span>CGST:</span>
+                                        <span id="cgstAmount">₹0.00</span>
+                                    </div>
+                                    <div class="tax-row">
+                                        <span>SGST:</span>
+                                        <span id="sgstAmount">₹0.00</span>
+                                    </div>
+                                    <div class="tax-row">
+                                        <span>Discount:</span>
+                                        <span id="discountDisplay">₹0.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="total-section">
+                                    <div class="total-amount">
+                                        <span>TOTAL</span>
+                                        <span id="billTotal">₹0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="payment-section">
+                                <h4>Payment Method</h4>
+                                <div class="payment-methods">
+                                    <button class="payment-btn active" data-method="cash">
+                                        <div class="payment-icon">💵</div>
+                                        <span>Cash</span>
+                                    </button>
+                                    <button class="payment-btn" data-method="card">
+                                        <div class="payment-icon">💳</div>
+                                        <span>Card</span>
+                                    </button>
+                                    <button class="payment-btn" data-method="upi">
+                                        <div class="payment-icon">📱</div>
+                                        <span>UPI</span>
+                                    </button>
+                                </div>
+
+                                <div class="amount-received-section">
+                                    <label>Amount Received</label>
+                                    <input type="number" id="amountReceived" class="amount-input" placeholder="Enter amount" step="0.01">
+                                    <div class="change-display">
+                                        <span>Change: <strong id="changeAmount">₹0.00</strong></span>
+                                    </div>
+                                </div>
+
+                                <div class="billing-actions">
+                                    <button class="btn btn--outline btn--full-width" onclick="AgentBilling.saveDraft()">Hold Bill</button>
+                                    <button id="completeSaleBtn" class="btn btn--primary btn--lg btn--full-width">Complete Sale & Print</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="addProductModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Add New Product</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm" class="product-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Product Name *</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SKU/Code *</label>
+                            <input type="text" class="form-control" name="sku" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" name="category">
+                                <option value="">Select Category</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Groceries">Groceries</option>
+                                <option value="Footwear">Footwear</option>
+                                <option value="Clothing">Clothing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subcategory</label>
+                            <input type="text" class="form-control" name="subcategory">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Cost Price *</label>
+                            <input type="number" class="form-control" name="costPrice" required step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Selling Price *</label>
+                            <input type="number" class="form-control" name="sellingPrice" required step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">MRP</label>
+                            <input type="number" class="form-control" name="mrp" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Initial Stock</label>
+                            <input type="number" class="form-control" name="stock" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">HSN Code</label>
+                            <input type="text" class="form-control" name="hsn">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tax Rate (%)</label>
+                            <select class="form-control" name="taxRate">
+                                <option value="0">0%</option>
+                                <option value="5">5%</option>
+                                <option value="12">12%</option>
+                                <option value="18">18%</option>
+                                <option value="28">28%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="shiftSummaryModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Shift Summary</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="shiftSummaryContent">
+                    <!-- Content populated by JS -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn--secondary modal-close">Close</button>
+                    <button class="btn btn--primary" onclick="AgentBilling.printShiftSummary()">Print Summary</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
